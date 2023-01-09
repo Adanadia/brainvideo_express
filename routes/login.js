@@ -28,4 +28,21 @@ router.post('/users', async (req, res) => {
     }
 }) ;
 
+router.post('/pwdcheck', async (req, res)=>{
+    var user = await redisClient.get('users')
+    var users = JSON.parse(user).userInfo
+    var flag = 0;
+    for(var i = 0; i< users.length; i++){
+        if(users[i].sid === req.body.sid && users[i].password === req.body.pwd){
+            flag = 1;
+        }
+    }
+    // console.log(req.body.pwd)
+    if(flag === 0){
+        res.send("0")
+    }else{
+        res.send("1")
+    }
+})
+
 module.exports = router;
